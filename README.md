@@ -25,11 +25,3 @@ The project is organized into the following main stages:
 
 - Python
 - Libraries: scikit-learn, numpy, matplotlib
-
-## How to Run
-
-To run the project, follow these steps:
-
-1. Clone the repository to your local machine.
-2. Ensure all dependencies are installed (`scikit-learn`, `numpy`, `matplotlib`).
-3. Run the main script to start the training and evaluation process.
