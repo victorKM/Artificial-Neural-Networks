@@ -18,7 +18,6 @@ def main():
 
   # Normalizacao
   dadosNormalizados = normalizacao(dados,-1,1)
-  print(dadosNormalizados)
 
   # Divide os dados em treino e teste
   atributosNormalizados, classes = divisaoAtributoClasse(dadosNormalizados)
