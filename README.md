@@ -31,10 +31,10 @@ The project is organized into the following main stages:
 5. **Testing with user**:
    - User can select images from computer and test if the class will be correct.
 
-     ![imagem2](https://github.com/user-attachments/assets/a3b0af07-c3c1-4069-9d87-103903ff7638)
+   ![imagem2](https://github.com/user-attachments/assets/a3b0af07-c3c1-4069-9d87-103903ff7638)
 
 
-     ![imagem3](https://github.com/user-attachments/assets/7011d18c-bb0f-4b63-a180-9f3a36451314)
+   ![imagem3](https://github.com/user-attachments/assets/7011d18c-bb0f-4b63-a180-9f3a36451314)
 
 ## Technologies Used
 
