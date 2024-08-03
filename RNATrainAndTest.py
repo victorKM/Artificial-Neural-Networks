@@ -4,8 +4,12 @@ from sklearn.model_selection import StratifiedKFold
 from sklearn.neural_network import MLPClassifier
 from sklearn.metrics  import accuracy_score, confusion_matrix, ConfusionMatrixDisplay
 import numpy as np
+from joblib import dump
+import pickle
 
 def main():
+  np.set_printoptions(precision=13, suppress=True)
+
   # Lê os dados do arquivo
   linhas = carregarDados('Attributes.txt')
 
@@ -14,7 +18,8 @@ def main():
 
   # Normalizacao
   dadosNormalizados = normalizacao(dados,-1,1)
-  
+  print(dadosNormalizados)
+
   # Divide os dados em treino e teste
   atributosNormalizados, classes = divisaoAtributoClasse(dadosNormalizados)
 
@@ -44,6 +49,10 @@ def main():
 
     # Treinar a MLP para este fold
     mlp.fit(atributosTreinoFold, classesTreinoFold)
+    
+    if(i+1==7):
+      # Salvar a MLP treinada para usar posteriormente
+      pickle.dump(mlp, open("model", 'wb'))
 
     # Testar
     classesPrevistasFold = mlp.predict(atributosTesteFold)
@@ -70,7 +79,7 @@ def carregarDados(nomeTxt):
 
 def normalizacao(dados, rangeMin, rangeMax):
   # Separa os atributos e as classes
-  atributos = np.array(dados)[:, :-1]
+  atributos = np.array(dados)[:, :-1].astype(float)
   classes = np.array(dados)[:, -1]
 
   # Normaliza os atributos entre -1 e 1

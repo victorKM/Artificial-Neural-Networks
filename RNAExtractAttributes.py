@@ -13,7 +13,7 @@ for i in range(0,4):
   for j in range(0,25):
 
     # Carregar a imagem
-    imagem = cv2.imread('ImagensProcessadas/' + pastas[i] + '/' + pastas[i] + str(j+1) + '.jpg', cv2.IMREAD_GRAYSCALE)
+    imagem = cv2.imread('ImagensProcessadas/' + pastas[i] + '/' + pastas[i] + str(j+1) + '.png', cv2.IMREAD_GRAYSCALE)
 
     if imagem is not None:
       glcm = graycomatrix(imagem, [1], [0], symmetric=True, normed=True)
@@ -34,7 +34,7 @@ for i in range(0,4):
       atributoVetor = [contraste, homogeinidade, energia,  correlacao, media,  desvioPadrao, entropia, pastas[i]]
       atributoMatriz.append(atributoVetor)
     else:
-      print('Pasta: ' + pastas[i] + ' | ' + 'Arquivo: ' + pastas[i] + str(j+1) + '.jpg')
+      print('Pasta: ' + pastas[i] + ' | ' + 'Arquivo: ' + pastas[i] + str(j+1) + '.png')
       print("A imagem nao foi carregada.")
 
 with open(arquivoOutput, "w") as file:
