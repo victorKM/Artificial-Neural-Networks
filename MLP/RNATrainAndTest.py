@@ -48,9 +48,9 @@ def main():
     # Treinar a MLP para este fold
     mlp.fit(atributosTreinoFold, classesTreinoFold)
     
-    if(i+1==7):
-      # Salvar a MLP treinada para usar posteriormente
-      pickle.dump(mlp, open("MLP/model", 'wb'))
+    # if(i+1==7):
+    #   # Salvar a MLP treinada para usar posteriormente
+    #   pickle.dump(mlp, open("MLP/model", 'wb'))
 
     # Testar
     classesPrevistasFold = mlp.predict(atributosTesteFold)
@@ -64,6 +64,8 @@ def main():
     display = ConfusionMatrixDisplay(confusion_matrix=matrizConfusao, display_labels=np.unique(classes))
     display.plot()
     plt.show()
+
+  pickle.dump(mlp, open("MLP/model", 'wb'))
 
   # Calcular e imprimir a acurácia média final
   acuracia_media_final = np.mean(acuracias)

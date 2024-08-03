@@ -9,10 +9,6 @@ from PIL import Image, ImageTk
 import os
 
 def show_custom_message(class_name, image_path):
-    # Cria uma janela principal
-    root = tk.Tk()
-    root.withdraw() 
-
     # Cria uma nova janela para a mensagem
     message_window = tk.Toplevel()
     message_window.title("")
@@ -29,11 +25,11 @@ def show_custom_message(class_name, image_path):
 
     # Carregar e exibir a imagem
     img = Image.open(image_path)
-    img = img.resize((400, 400)) 
+    img = img.resize((400, 400))
     img_tk = ImageTk.PhotoImage(img)
 
     img_label = tk.Label(message_window, image=img_tk)
-    img_label.image = img_tk 
+    img_label.image = img_tk
     img_label.pack(pady=10)
 
     # Botao de OK
@@ -47,8 +43,8 @@ def show_custom_message(class_name, image_path):
                 )
     ok_button.pack(pady=10)
 
-    # Mantem janela aberta
-    message_window.mainloop()
+    # Espera até que a janela seja fechada
+    message_window.wait_window()
   
 def main():
     np.set_printoptions(precision=13, suppress=True)
@@ -64,17 +60,7 @@ def main():
     imagem = cv2.imread(file.name)
 
     if imagem is not None:
-
-      # Redimensionar a imagem para 256x256
-      novoTamanho = (256, 256)
-      imagemRedimensionada = cv2.resize(imagem, novoTamanho)
-
-  	  # Armazena temporariamente a imagem
-      cv2.imwrite('imagem.png', imagemRedimensionada)
-      imagem = cv2.imread('imagem.png')
-      os.remove('imagem.png')
-
-      # Converte para escalas de cinza
+      imagem = cv2.resize(imagem, (256, 256))
       imagem = cv2.cvtColor(imagem, cv2.COLOR_BGR2GRAY)
 
       # Iniciar extracao de atributos

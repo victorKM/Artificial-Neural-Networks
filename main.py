@@ -1,7 +1,6 @@
-from MLP import RNAExtractAttributes, RNAPreProcessImage, RNATrainAndTest
+from MLP import RNAExtractAttributes, RNATrainAndTest
 
 def main():
-    RNAPreProcessImage.main()
     RNAExtractAttributes.main()
     RNATrainAndTest.main()
 

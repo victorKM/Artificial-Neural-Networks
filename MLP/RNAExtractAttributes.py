@@ -14,7 +14,8 @@ def main():
     for j in range(0,25):
 
       # Carregar a imagem
-      imagem = cv2.imread('ImagensProcessadas/' + pastas[i] + '/' + pastas[i] + str(j+1) + '.png')
+      imagem = cv2.imread('ImagensPreProcessadas/' + pastas[i] + '/' + pastas[i] + str(j+1) + '.png')
+      imagem = cv2.resize(imagem, (256,256))
       imagem = cv2.cvtColor(imagem, cv2.COLOR_BGR2GRAY)
 
       if imagem is not None:
