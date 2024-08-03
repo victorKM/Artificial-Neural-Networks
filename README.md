@@ -37,6 +37,6 @@ The project is organized into the following main stages:
 ## Technologies Used
 
 - Python
-- Libraries: scikit-learn, numpy, matplotlib
+- Libraries: scikit-learn, numpy, matplotlib, skimage, cv2, pickle, tkinter, PIL
 
 
