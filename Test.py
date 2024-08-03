@@ -9,21 +9,20 @@ from PIL import Image, ImageTk
 import os
 
 def show_custom_message(class_name, image_path):
-    # Cria uma nova janela para a mensagem
+    # Create new window for message
     message_window = tk.Toplevel()
     message_window.title("")
 
-    # Define o tamanho da janela
-    message_window.geometry("800x600")  # Aumentar o tamanho da janela para acomodar a imagem
-
-    # Define a fonte e o tamanho do texto
+    # Window size
+    message_window.geometry("800x600") 
+    
+    # Font and text size
     custom_font = font.Font(family="Helvetica", size=20, weight="bold")
 
-    # Adiciona um rótulo com o texto
     label = tk.Label(message_window, text=f"Classe: {class_name}!", font=custom_font)
     label.pack(pady=10)
 
-    # Carregar e exibir a imagem
+    # Show image
     img = Image.open(image_path)
     img = img.resize((400, 400))
     img_tk = ImageTk.PhotoImage(img)
@@ -32,71 +31,70 @@ def show_custom_message(class_name, image_path):
     img_label.image = img_tk
     img_label.pack(pady=10)
 
-    # Botao de OK
+    # OK button
     ok_button = tk.Button(
                     message_window,
                     text="OK",
                     command=message_window.destroy,
                     width=20,
                     height=2,
-                    font=("Helvetica", 12, "bold")  # Fonte Helvetica, tamanho 12, negrito
+                    font=("Helvetica", 12, "bold")
                 )
     ok_button.pack(pady=10)
 
-    # Espera até que a janela seja fechada
+    # Wait until window close
     message_window.wait_window()
   
 def main():
     np.set_printoptions(precision=13, suppress=True)
 
-    # Carregar a MLP
+    # Load MLP
     mlp = pickle.load(open("MLP/model", 'rb'))
 
-    # Criar uma interface gráfica para selecionar a imagem
+    # Create interface to select the image
     root = tk.Tk()
     root.withdraw()
     file = fd.askopenfile()
     
-    imagem = cv2.imread(file.name)
+    image = cv2.imread(file.name)
 
-    if imagem is not None:
-      imagem = cv2.resize(imagem, (256, 256))
-      imagem = cv2.cvtColor(imagem, cv2.COLOR_BGR2GRAY)
+    if image is not None:
+      image = cv2.resize(image, (256, 256))
+      image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
 
-      # Iniciar extracao de atributos
-      glcm = graycomatrix(imagem, [1], [0], symmetric=True, normed=True)
+      # Begin attributes extraction
+      glcm = graycomatrix(image, [1], [0], symmetric=True, normed=True)
 
-      # Extraia atributos da GLCM
-      contraste = graycoprops(glcm, 'contrast')[0][0]
-      homogeinidade = graycoprops(glcm, 'homogeneity')[0][0]
-      energia = graycoprops(glcm, 'energy')[0][0]
-      correlacao = graycoprops(glcm, 'correlation')[0][0]
-      media = np.mean(imagem)
-      desvioPadrao = np.std(imagem)
-      hist, _ = np.histogram(imagem.flatten(), bins=256, range=[0,256])
-      histSoma = np.sum(hist)
+      # Extract attributes from GLCM
+      contrast = graycoprops(glcm, 'contrast')[0][0]
+      homogeneity = graycoprops(glcm, 'homogeneity')[0][0]
+      energy = graycoprops(glcm, 'energy')[0][0]
+      correlation = graycoprops(glcm, 'correlation')[0][0]
+      average = np.mean(image)
+      standard_deviation = np.std(image)
+      hist, _ = np.histogram(image.flatten(), bins=256, range=[0,256])
+      histSum = np.sum(hist)
       epsilon = 1e-10
-      entropia = -np.sum(np.nan_to_num((hist / (histSoma + epsilon)) * np.log2((hist + epsilon) / (histSoma + epsilon))))
+      entropy = -np.sum(np.nan_to_num((hist / (histSum + epsilon)) * np.log2((hist + epsilon) / (histSum + epsilon))))
 
-      # Vetor de atributos
-      atributos = np.array([contraste, homogeinidade, energia, correlacao, media, desvioPadrao, entropia])
+      # Attributes vector
+      attributes = np.array([contrast, homogeneity, energy, correlation, average, standard_deviation, entropy])
 
-      # Normalização com MinMax
+      # Normalizations
       with open('MLP/MaxMin.txt', 'r') as text:
-          linhas = text.readlines()
-      dados = [list(map(float, linha.strip().split(','))) for linha in linhas]
+          lines = text.readlines()
+      data = [list(map(float, line.strip().split(','))) for line in lines]
 
-      min_val = np.array(dados[0]).astype(float)
-      max_val = np.array(dados[1]).astype(float)
-      atributos_normalizados = 2 * ((atributos - min_val) / (max_val - min_val)) - 1
+      min_val = np.array(data[0]).astype(float)
+      max_val = np.array(data[1]).astype(float)
+      normalized_attributes = 2 * ((attributes - min_val) / (max_val - min_val)) - 1
 
-      classe = mlp.predict([atributos_normalizados])
+      classe = mlp.predict([normalized_attributes])
 
       show_custom_message(classe[0], file.name)
 
     else:
-      print("A imagem nao foi carregada.")
+      print("Image was not loaded.")
     
-# Chamando main
 if __name__ == "__main__":
     main()

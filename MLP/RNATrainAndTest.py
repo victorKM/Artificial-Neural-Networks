@@ -9,137 +9,134 @@ import pickle
 def main():
   np.set_printoptions(precision=13, suppress=True)
 
-  # Lê os dados do arquivo
-  linhas = carregarDados('MLP/Attributes.txt')
+  # Read file data
+  lines = load_data('MLP/Attributes.txt')
 
-  # Manda os dados do arquivo para um array 
-  dados = [list(map(float, linha.strip().split(',')[:-1])) + [linha.strip().split(',')[-1].strip()] for linha in linhas]
+  # Send data to array
+  data = [list(map(float, line.strip().split(',')[:-1])) + [line.strip().split(',')[-1].strip()] for line in lines]
 
-  # Normalizacao
-  dadosNormalizados = normalizacao(dados,-1,1)
+  # Normalization
+  normalized_data = normalization(data,-1,1)
 
-  # Divide os dados em treino e teste
-  atributosNormalizados, classes = divisaoAtributoClasse(dadosNormalizados)
+  # Split in train and test data
+  normalized_attributes, classes = split_data(normalized_data)
 
-  # Coletar dados do usuário sobre a configuracao do MLP
-  funcaoAtivacao, neuroniosCamadaOculta, taxaAprendizado = obterHiperparametros()
+  # Collect user data for configure MLP
+  activation_function, neurons_number, learning_rate = get_hyperparameters()
 
-  # Criar a MLP
-  mlp = MLPClassifier(hidden_layer_sizes=neuroniosCamadaOculta, activation=funcaoAtivacao, solver="adam",
-                      learning_rate_init=taxaAprendizado, max_iter=2000, random_state=42)
+  # Create MLP
+  mlp = MLPClassifier(hidden_layer_sizes=neurons_number, activation=activation_function, solver="adam",
+                      learning_rate_init=learning_rate, max_iter=2000, random_state=42)
 
-  # Validação cruzada
-  folds = int(input("Informe o número de folds que deseja: "))
+  # Cross Validation
+  folds = int(input("Type the number of folds that you want: "))
   while(folds < 1):
-     folds = int(input("Informe o novamente número de folds que deseja: "))
+     folds = int(input("Type again the number of folds that you want: "))
   cv = StratifiedKFold(n_splits=folds, shuffle=True, random_state=42)
 
-  # Inicializar lista para armazenar as acurácias de cada fold
-  acuracias = []
+  # List to store folders accuracies
+  accuracies = []
   
-  # Treinar e testar para cada fold
-  for i, (indexTreino, indexTeste) in enumerate(cv.split(atributosNormalizados, classes)):
+  # Train and test for each fold
+  for i, (train_index, test_index) in enumerate(cv.split(normalized_attributes, classes)):
     print(f"\nFold {i + 1}:")
 
-    # Dividir dados em treino e teste para este fold
-    atributosTreinoFold, atributosTesteFold = atributosNormalizados[indexTreino], atributosNormalizados[indexTeste]
-    classesTreinoFold, classesTesteFold = classes[indexTreino], classes[indexTeste]
+    # Split in train and test data for this fold
+    train_fold_attributes, test_fold_attributes = normalized_attributes[train_index], normalized_attributes[test_index]
+    train_fold_classes, test_fold_classes = classes[train_index], classes[test_index]
 
-    # Treinar a MLP para este fold
-    mlp.fit(atributosTreinoFold, classesTreinoFold)
-    
-    # if(i+1==7):
-    #   # Salvar a MLP treinada para usar posteriormente
-    #   pickle.dump(mlp, open("MLP/model", 'wb'))
+    # Train MLP for this fold
+    mlp.fit(train_fold_attributes, train_fold_classes)
 
-    # Testar
-    classesPrevistasFold = mlp.predict(atributosTesteFold)
+    # Test
+    predict_fold_classes = mlp.predict(test_fold_attributes)
 
-    # Calcular métricas para este fold
-    acuracia = accuracy_score(classesTesteFold, classesPrevistasFold)
-    print("Acuracia:", acuracia)
-    acuracias.append(acuracia)
+    # Calculate metrics for this fold
+    accuracy = accuracy_score(test_fold_classes, predict_fold_classes)
+    print("Accuracy:", accuracy)
+    accuracies.append(accuracy)
 
-    matrizConfusao = confusion_matrix(classesTesteFold, classesPrevistasFold, labels=np.unique(classes))
-    display = ConfusionMatrixDisplay(confusion_matrix=matrizConfusao, display_labels=np.unique(classes))
+    confusion_matr = confusion_matrix(test_fold_classes, predict_fold_classes, labels=np.unique(classes))
+    display = ConfusionMatrixDisplay(confusion_matrix=confusion_matr, display_labels=np.unique(classes))
     display.plot()
     plt.show()
 
+  # Create model file to test with user
   pickle.dump(mlp, open("MLP/model", 'wb'))
 
-  # Calcular e imprimir a acurácia média final
-  acuracia_media_final = np.mean(acuracias)
-  print("\nAcurácia Média Final:", acuracia_media_final)
+  # Calculate and show final average accuracy
+  final_average_accuracy = np.mean(accuracies)
+  print("\nFinal Average Accuracy:", final_average_accuracy)
 
-def carregarDados(nomeTxt):
-  # Lendo os dados do arquivo
+def load_data(nomeTxt):
+  # Read file data
   with open(nomeTxt, 'r') as file:
-    linhas = file.readlines()
-  return linhas
+    lines = file.readlines()
+  return lines
 
-def normalizacao(dados, rangeMin, rangeMax):
-  # Separa os atributos e as classes
-  atributos = np.array(dados)[:, :-1].astype(float)
-  classes = np.array(dados)[:, -1]
+def normalization(data, rangeMin, rangeMax):
+  # Separate attributes and classes
+  attributes = np.array(data)[:, :-1].astype(float)
+  classes = np.array(data)[:, -1]
 
-  # Guardar valores de maximo e minimo num txt para usar em Test.py
-  Max = np.max(atributos, axis=0)
-  Min = np.min(atributos, axis=0)
-  max_str = ', '.join(f"{val:.13f}" for val in Max)
-  min_str = ', '.join(f"{val:.13f}" for val in Min)
+  # Store max and min values in txt to use in test.py
+  max = np.max(attributes, axis=0)
+  min = np.min(attributes, axis=0)
+  max_values = ', '.join(f"{val:.13f}" for val in max)
+  min_values = ', '.join(f"{val:.13f}" for val in min)
 
   with open("MLP/MaxMin.txt", "w") as file:
-    file.write(min_str)
+    file.write(min_values)
     file.write("\n")
-    file.write(max_str)
+    file.write(max_values)
 
-  # Normaliza os atributos entre -1 e 1
+  # Normalize attributes between -1 and 1
   scaler = MinMaxScaler(feature_range=(rangeMin, rangeMax))
-  atributosNormalizados = scaler.fit_transform(atributos)
+  normalized_attributes = scaler.fit_transform(attributes)
 
-  # Combina os atributos normalizados com as classes (mantendo a última coluna como string)
-  dadosNormalizados = np.column_stack((atributosNormalizados, classes))
-  return dadosNormalizados
+  # Bring together attributes and classes in on variable
+  normalized_data = np.column_stack((normalized_attributes, classes))
+  return normalized_data
 
-def divisaoAtributoClasse(dadosNormalizados):
-  # Extrai atributos normalizados e classes
-  atributosNormalizados = np.array(dadosNormalizados)[:, :-1].astype(float)
-  classes = np.array(dadosNormalizados)[:, -1]
+def split_data(normalized_data):
+  # Extract normalized attributes and classes
+  normalized_attributes = np.array(normalized_data)[:, :-1].astype(float)
+  classes = np.array(normalized_data)[:, -1]
 
-  return atributosNormalizados, classes
+  return normalized_attributes, classes
 
-def obterHiperparametros():
-   funcaoAtivacao = obterFuncaoAtivacao()
-   neuroniosCamadaOculta = obterNeuroniosCamadaOculta()
-   taxaAprendizado = obterTaxaAprendizado()
-   return funcaoAtivacao, neuroniosCamadaOculta, taxaAprendizado
+def get_hyperparameters():
+   activation_function = get_activation_function()
+   neurons_number = get_neurons_number()
+   learning_rate = get_learning_rate()
+   return activation_function, neurons_number, learning_rate
   
-def obterFuncaoAtivacao():
-  opcoesFuncaoAtivacao = ["identity", "logistic", "tanh", "relu"]
-  opcaoEscolhida = input("Escolha uma funcao de ativacao (1) Identidade (2) Logística (3) Tangente (4) Relu: ")
+def get_activation_function():
+  activate_function_options = ["identity", "logistic", "tanh", "relu"]
+  option = input("Choose one activation function (1) Identity (2) Logistic (3) Tangent (4) Relu: ")
 
-  funcaoAtivacao = None
-  while funcaoAtivacao is None:
-    opcaoEscolhida = int(opcaoEscolhida)
-    if(opcaoEscolhida >= 1 and opcaoEscolhida <= 4):
-      funcaoAtivacao = opcoesFuncaoAtivacao[opcaoEscolhida-1]
+  activation_function = None
+  while activation_function is None:
+    option = int(option)
+    if(option >= 1 and option <= 4):
+      activation_function = activate_function_options[option-1]
     else: 
-      opcaoEscolhida = input("Escolha uma opcao valida: ")
-  return funcaoAtivacao
+      option = input("Choose a valid option: ")
+  return activation_function
 
-def obterNeuroniosCamadaOculta():
-  numeroCamadaOculta = int(input("Escolha o numero de camadas ocultas no MLP: "))
-  neuroniosCamadaOculta = []
-  for i in range(0, numeroCamadaOculta):
-    numeroNeuronioCamada = int(input("Escolha o numero de neuronios para a " + str(i+1) + "a camada oculta: "))
-    neuroniosCamadaOculta.append(numeroNeuronioCamada)
-  return tuple(neuroniosCamadaOculta)
+def get_neurons_number():
+  hidden_layers_number = int(input("Choose a number of hidden layers for MLP: "))
+  neurons_number = []
+  for i in range(0, hidden_layers_number):
+    neurons_layer_number = int(input("Choose a neurons number for the " + str(i+1) + " hidden layer: "))
+    neurons_number.append(neurons_layer_number)
+  return tuple(neurons_number)
 
-def obterTaxaAprendizado():
-  taxaAprendizado = float(input("Forneca o valor da taxa de aprendizado entre 0.001 e 1: "))
-  while(taxaAprendizado < 0.001 or taxaAprendizado > 1):
-    taxaAprendizado = float(input("Forneca o valor correto da taxa de aprendizado entre 0.1 e 1: "))
-  return taxaAprendizado
+def get_learning_rate():
+  learning_rate = float(input("Write learning rate between 0.001 and 1: "))
+  while(learning_rate < 0.001 or learning_rate > 1):
+    learning_rate = float(input("Write a correct learning rate between 0.001 and 1: "))
+  return learning_rate
 
 if __name__ == "__main__":
     main()
