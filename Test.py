@@ -13,8 +13,6 @@ from tkinter import messagebox, font
 from tkinter import filedialog as fd
 from PIL import Image, ImageTk 
 
-FILE = ""
-
 def show_custom_message(class_name, image_path):
     # Cria uma janela principal
     root = tk.Tk()
