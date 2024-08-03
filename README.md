@@ -25,16 +25,14 @@ The project is organized into the following main stages:
 
    - Generating confusion matrix plots to visualize classification performance for each texture type and for each fold.
 
-   ![imagem1](https://github.com/user-attachments/assets/de530da8-b1d4-45f0-9ef8-00c58f2435db)
-
+   ![image](https://github.com/user-attachments/assets/ea8358a5-e16f-48aa-a9f5-af2e3516693e)
 
 5. **Testing with user**:
    - User can select images from computer and test if the class will be correct.
 
-   ![imagem2](https://github.com/user-attachments/assets/a3b0af07-c3c1-4069-9d87-103903ff7638)
+   ![image](https://github.com/user-attachments/assets/8183bbac-531e-4397-ae2a-6e947c77be9b)
 
-
-   ![imagem3](https://github.com/user-attachments/assets/7011d18c-bb0f-4b63-a180-9f3a36451314)
+   ![image](https://github.com/user-attachments/assets/523298e3-8b22-4cda-bf7c-38b8b1de1c4c)
 
 ## Technologies Used
 
