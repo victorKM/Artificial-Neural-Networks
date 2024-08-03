@@ -2,7 +2,7 @@
 
 This project was developed as part of the Artificial Neural Networks course at the university. The main goal is to create and train a neural network to classify different types of image textures. The dataset includes four distinct texture types, each representing a different class. These textures were selected to have unique visual characteristics, which help in training and evaluating the model.
 
-## Project Structure
+# Project Structure
 
 The project is organized into the following main stages:
 
@@ -34,7 +34,7 @@ The project is organized into the following main stages:
 
    ![image](https://github.com/user-attachments/assets/523298e3-8b22-4cda-bf7c-38b8b1de1c4c)
 
-## Technologies Used
+# Technologies Used
 
 - Python
 - Libraries: scikit-learn, numpy, matplotlib, skimage, cv2, pickle, tkinter, PIL
