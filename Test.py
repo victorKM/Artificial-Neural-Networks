@@ -3,10 +3,9 @@ import cv2
 from skimage.feature import graycomatrix, graycoprops
 import pickle
 import tkinter as tk
-from tkinter import messagebox, font
+from tkinter import font
 from tkinter import filedialog as fd
 from PIL import Image, ImageTk 
-import os
 
 def show_custom_message(class_name, image_path):
     # Create new window for message
@@ -19,7 +18,7 @@ def show_custom_message(class_name, image_path):
     # Font and text size
     custom_font = font.Font(family="Helvetica", size=20, weight="bold")
 
-    label = tk.Label(message_window, text=f"Classe: {class_name}!", font=custom_font)
+    label = tk.Label(message_window, text=f"Class: {class_name}!", font=custom_font)
     label.pack(pady=10)
 
     # Show image
@@ -89,9 +88,9 @@ def main():
       max_val = np.array(data[1]).astype(float)
       normalized_attributes = 2 * ((attributes - min_val) / (max_val - min_val)) - 1
 
-      classe = mlp.predict([normalized_attributes])
+      class_name = mlp.predict([normalized_attributes])
 
-      show_custom_message(classe[0], file.name)
+      show_custom_message(class_name[0], file.name)
 
     else:
       print("Image was not loaded.")
