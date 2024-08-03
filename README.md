@@ -26,7 +26,7 @@ The project is organized into the following main stages:
    - Generating confusion matrix plots to visualize classification performance for each texture type.
 
 5. **Testing with user**:
-   - User can select images from computer and test if the class will be correct
+   - User can select images from computer and test if the class will be correct.
 
 ## Technologies Used
 
