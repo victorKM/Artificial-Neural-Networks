@@ -4,7 +4,6 @@ from sklearn.model_selection import StratifiedKFold
 from sklearn.neural_network import MLPClassifier
 from sklearn.metrics  import accuracy_score, confusion_matrix, ConfusionMatrixDisplay
 import numpy as np
-from joblib import dump
 import pickle
 
 def main():
@@ -80,6 +79,17 @@ def normalizacao(dados, rangeMin, rangeMax):
   # Separa os atributos e as classes
   atributos = np.array(dados)[:, :-1].astype(float)
   classes = np.array(dados)[:, -1]
+
+  # Guardar valores de maximo e minimo num txt para usar em Test.py
+  Max = np.max(atributos, axis=0)
+  Min = np.min(atributos, axis=0)
+  max_str = ', '.join(f"{val:.13f}" for val in Max)
+  min_str = ', '.join(f"{val:.13f}" for val in Min)
+
+  with open("MaxMin.txt", "w") as file:
+    file.write(min_str)
+    file.write("\n")
+    file.write(max_str)
 
   # Normaliza os atributos entre -1 e 1
   scaler = MinMaxScaler(feature_range=(rangeMin, rangeMax))

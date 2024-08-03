@@ -10,6 +10,7 @@ for i in range(0,4):
     imagem = cv2.imread('ImagensPreProcessadas/' + pastas[i] + '/' + pastas[i] + str(j+1) + '.png')
 
     if imagem is not None:
+      
       # Redimensionar a imagem para 256x256
       novoTamanho = (256, 256)
       imagemRedimensionada = cv2.resize(imagem, novoTamanho)

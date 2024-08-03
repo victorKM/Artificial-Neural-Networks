@@ -1,10 +1,4 @@
-import matplotlib.pyplot as plt
-from sklearn.preprocessing import MinMaxScaler
-from sklearn.model_selection import StratifiedKFold
-from sklearn.neural_network import MLPClassifier
-from sklearn.metrics  import accuracy_score, confusion_matrix, ConfusionMatrixDisplay
 import numpy as np
-from joblib import load
 import cv2
 from skimage.feature import graycomatrix, graycoprops
 import pickle
@@ -12,6 +6,7 @@ import tkinter as tk
 from tkinter import messagebox, font
 from tkinter import filedialog as fd
 from PIL import Image, ImageTk 
+import os
 
 def show_custom_message(class_name, image_path):
     # Cria uma janela principal
@@ -55,7 +50,6 @@ def show_custom_message(class_name, image_path):
     # Mantem janela aberta
     message_window.mainloop()
   
-
 def main():
     np.set_printoptions(precision=13, suppress=True)
 
@@ -75,9 +69,14 @@ def main():
       novoTamanho = (256, 256)
       imagemRedimensionada = cv2.resize(imagem, novoTamanho)
 
+  	  # Armazena temporariamente a imagem
       cv2.imwrite('imagem.png', imagemRedimensionada)
-      imagem = cv2.imread('imagem.png', cv2.IMREAD_GRAYSCALE)
-      
+      imagem = cv2.imread('imagem.png')
+      os.remove('imagem.png')
+
+      # Converte para escalas de cinza
+      imagem = cv2.cvtColor(imagem, cv2.COLOR_BGR2GRAY)
+
       # Iniciar extracao de atributos
       glcm = graycomatrix(imagem, [1], [0], symmetric=True, normed=True)
 
@@ -96,9 +95,13 @@ def main():
       # Vetor de atributos
       atributos = np.array([contraste, homogeinidade, energia, correlacao, media, desvioPadrao, entropia])
 
-      # Normalização Min-Max
-      min_val = np.array([2.2135569852941,  0.0245327833519,  0.0064963714559,  0.0815281160685, 61.1517791748047,  6.4181027238808,  3.7718027076496])
-      max_val = np.array([4079.592095588236,     0.7173791186012,    0.5334800277578, 0.9937278813403,  223.8517456054688,   71.6525687270341, 7.9456970125464])
+      # Normalização com MinMax
+      with open('MaxMin.txt', 'r') as text:
+          linhas = text.readlines()
+      dados = [list(map(float, linha.strip().split(','))) for linha in linhas]
+
+      min_val = np.array(dados[0]).astype(float)
+      max_val = np.array(dados[1]).astype(float)
       atributos_normalizados = 2 * ((atributos - min_val) / (max_val - min_val)) - 1
 
       classe = mlp.predict([atributos_normalizados])
