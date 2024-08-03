@@ -7,19 +7,26 @@ This project was developed as part of the Artificial Neural Networks course at t
 The project is organized into the following main stages:
 
 1. **Data Preprocessing**:
-    - Reading and loading images from the files.
-    - Normalizing the data to ensure values are within an appropriate range for neural network training.
+
+   - Reading and loading images from the files.
+   - Normalizing the data to ensure values are within an appropriate range for neural network training.
 
 2. **Model Definition**:
-    - Using a Multilayer Perceptron (MLP) with adjustable hyperparameters such as activation function, number of neurons in each hidden layer, and learning rate.
-    - Implementing cross-validation to robustly assess model performance.
+
+   - Using a Multilayer Perceptron (MLP) with adjustable hyperparameters such as activation function, number of neurons in each hidden layer, and learning rate.
+   - Implementing cross-validation to robustly assess model performance.
 
 3. **Training and Evaluation**:
-    - Training the model on training data and evaluating it on test data for each fold during cross-validation.
-    - Calculating performance metrics such as accuracy and confusion matrix for each fold and final average accuracy.
+
+   - Training the model on training data and evaluating it on test data for each fold during cross-validation.
+   - Calculating performance metrics such as accuracy and confusion matrix for each fold and final average accuracy.
 
 4. **Results Visualization**:
-    - Generating confusion matrix plots to visualize classification performance for each texture type.
+
+   - Generating confusion matrix plots to visualize classification performance for each texture type.
+
+5. **Testing with user**:
+   - User can select images from computer and test if the class will be correct
 
 ## Technologies Used
 
