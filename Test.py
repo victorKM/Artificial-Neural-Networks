@@ -54,7 +54,7 @@ def main():
     np.set_printoptions(precision=13, suppress=True)
 
     # Carregar a MLP
-    mlp = pickle.load(open("model", 'rb'))
+    mlp = pickle.load(open("MLP/model", 'rb'))
 
     # Criar uma interface gráfica para selecionar a imagem
     root = tk.Tk()
@@ -96,7 +96,7 @@ def main():
       atributos = np.array([contraste, homogeinidade, energia, correlacao, media, desvioPadrao, entropia])
 
       # Normalização com MinMax
-      with open('MaxMin.txt', 'r') as text:
+      with open('MLP/MaxMin.txt', 'r') as text:
           linhas = text.readlines()
       dados = [list(map(float, linha.strip().split(','))) for linha in linhas]
 

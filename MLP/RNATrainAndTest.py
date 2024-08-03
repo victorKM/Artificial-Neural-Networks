@@ -10,7 +10,7 @@ def main():
   np.set_printoptions(precision=13, suppress=True)
 
   # Lê os dados do arquivo
-  linhas = carregarDados('Attributes.txt')
+  linhas = carregarDados('MLP/Attributes.txt')
 
   # Manda os dados do arquivo para um array 
   dados = [list(map(float, linha.strip().split(',')[:-1])) + [linha.strip().split(',')[-1].strip()] for linha in linhas]
@@ -50,7 +50,7 @@ def main():
     
     if(i+1==7):
       # Salvar a MLP treinada para usar posteriormente
-      pickle.dump(mlp, open("model", 'wb'))
+      pickle.dump(mlp, open("MLP/model", 'wb'))
 
     # Testar
     classesPrevistasFold = mlp.predict(atributosTesteFold)
@@ -86,7 +86,7 @@ def normalizacao(dados, rangeMin, rangeMax):
   max_str = ', '.join(f"{val:.13f}" for val in Max)
   min_str = ', '.join(f"{val:.13f}" for val in Min)
 
-  with open("MaxMin.txt", "w") as file:
+  with open("MLP/MaxMin.txt", "w") as file:
     file.write(min_str)
     file.write("\n")
     file.write(max_str)
@@ -139,6 +139,5 @@ def obterTaxaAprendizado():
     taxaAprendizado = float(input("Forneca o valor correto da taxa de aprendizado entre 0.1 e 1: "))
   return taxaAprendizado
 
-# Chamando main
 if __name__ == "__main__":
     main()
