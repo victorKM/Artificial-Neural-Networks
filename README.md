@@ -1,6 +1,6 @@
 # Project Description
 
-The main goal is to create and train a neural network to classify different types of image textures. The dataset includes four distinct texture types, each representing a different class. These textures were selected to have unique visual characteristics, which help in training and evaluating the model
+The main goal is to create and train a neural network to classify different types of image textures. The dataset includes four distinct texture types, each representing a different class. These textures were selected to have unique visual characteristics, which help in training and evaluating the model.
 
 # Project Structure
 
