@@ -23,7 +23,10 @@ The project is organized into the following main stages:
 
 4. **Results Visualization**:
 
-   - Generating confusion matrix plots to visualize classification performance for each texture type.
+   - Generating confusion matrix plots to visualize classification performance for each texture type and for each fold.
+
+   ![imagem1](https://github.com/user-attachments/assets/de530da8-b1d4-45f0-9ef8-00c58f2435db)
+
 
 5. **Testing with user**:
    - User can select images from computer and test if the class will be correct.
@@ -32,3 +35,11 @@ The project is organized into the following main stages:
 
 - Python
 - Libraries: scikit-learn, numpy, matplotlib
+
+## Example
+
+![imagem2](https://github.com/user-attachments/assets/a3b0af07-c3c1-4069-9d87-103903ff7638)
+
+![imagem3](https://github.com/user-attachments/assets/7011d18c-bb0f-4b63-a180-9f3a36451314)
+
+
