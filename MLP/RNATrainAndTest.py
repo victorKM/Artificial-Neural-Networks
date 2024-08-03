@@ -6,7 +6,8 @@ from sklearn.metrics  import accuracy_score, confusion_matrix, ConfusionMatrixDi
 import numpy as np
 import pickle
 
-def main():
+def __main__():
+  # Set number places after decimal point
   np.set_printoptions(precision=13, suppress=True)
 
   # Read file data
@@ -139,4 +140,4 @@ def get_learning_rate():
   return learning_rate
 
 if __name__ == "__main__":
-    main()
+    __main__()

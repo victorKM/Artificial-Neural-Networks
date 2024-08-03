@@ -2,7 +2,7 @@ import numpy as np
 import cv2
 from skimage.feature import graycomatrix, graycoprops
 
-def main():
+def __main__():
   # Array with pasts name
   pasts = ['Sand', 'Grass', 'Wood', 'Stone']
 
@@ -46,4 +46,4 @@ def main():
               file.write("\n")
 
 if __name__ == "__main__":
-    main()
+    __main__()

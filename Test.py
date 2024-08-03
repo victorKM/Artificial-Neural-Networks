@@ -7,44 +7,8 @@ from tkinter import font
 from tkinter import filedialog as fd
 from PIL import Image, ImageTk 
 
-def show_custom_message(class_name, image_path):
-    # Create new window for message
-    message_window = tk.Toplevel()
-    message_window.title("")
-
-    # Window size
-    message_window.geometry("800x600") 
-    
-    # Font and text size
-    custom_font = font.Font(family="Helvetica", size=20, weight="bold")
-
-    label = tk.Label(message_window, text=f"Class: {class_name}!", font=custom_font)
-    label.pack(pady=10)
-
-    # Show image
-    img = Image.open(image_path)
-    img = img.resize((400, 400))
-    img_tk = ImageTk.PhotoImage(img)
-
-    img_label = tk.Label(message_window, image=img_tk)
-    img_label.image = img_tk
-    img_label.pack(pady=10)
-
-    # OK button
-    ok_button = tk.Button(
-                    message_window,
-                    text="OK",
-                    command=message_window.destroy,
-                    width=20,
-                    height=2,
-                    font=("Helvetica", 12, "bold")
-                )
-    ok_button.pack(pady=10)
-
-    # Wait until window close
-    message_window.wait_window()
-  
-def main():
+def __main__():
+    # Set number places after decimal point
     np.set_printoptions(precision=13, suppress=True)
 
     # Load MLP
@@ -94,6 +58,43 @@ def main():
 
     else:
       print("Image was not loaded.")
+
+def show_custom_message(class_name, image_path):
+    # Create new window for message
+    message_window = tk.Toplevel()
+    message_window.title("")
+
+    # Window size
+    message_window.geometry("800x600") 
+    
+    # Font and text size
+    custom_font = font.Font(family="Helvetica", size=20, weight="bold")
+
+    label = tk.Label(message_window, text=f"Class: {class_name}!", font=custom_font)
+    label.pack(pady=10)
+
+    # Show image
+    img = Image.open(image_path)
+    img = img.resize((400, 400))
+    img_tk = ImageTk.PhotoImage(img)
+
+    img_label = tk.Label(message_window, image=img_tk)
+    img_label.image = img_tk
+    img_label.pack(pady=10)
+
+    # OK button
+    ok_button = tk.Button(
+                    message_window,
+                    text="OK",
+                    command=message_window.destroy,
+                    width=20,
+                    height=2,
+                    font=("Helvetica", 12, "bold")
+                )
+    ok_button.pack(pady=10)
+
+    # Wait until window close
+    message_window.wait_window()
     
 if __name__ == "__main__":
-    main()
+    __main__()

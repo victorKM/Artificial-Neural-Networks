@@ -1,8 +1,8 @@
 from MLP import RNAExtractAttributes, RNATrainAndTest
 
-def main():
+def __main__():
     RNAExtractAttributes.main()
     RNATrainAndTest.main()
 
 if __name__ == "__main__":
-    main()
+    __main__()
